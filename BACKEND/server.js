@@ -4,7 +4,7 @@ const mongoose=require('mongoose')
 const connectdb=require('./config/db')
 const authRoutes=require('./routes/authRoutes')
 const cors=require('cors')
-// const studyGroupRoutes=require('./routes/studyGroupRoutes')
+const studyGroupRoutes=require('./routes/studyGroupRoutes')
 
 
 
@@ -24,7 +24,7 @@ app.get('/',async (req,res)=>{
 
 app.use('/api/auth',authRoutes)
 
-// app.use('/api/studygroup',studyGroupRoutes)
+app.use('/api/studygroup',studyGroupRoutes)
 
 
 app.listen(PORT,()=>{

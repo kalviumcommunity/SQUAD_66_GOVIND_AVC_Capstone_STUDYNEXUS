@@ -8,7 +8,7 @@ const protectRoute=async(req,res,next)=>{
         const token=req.headers.authorization?.split(" ")[1];
 
         if(!token){
-            return res.status(404).json({message:"Authorization Revoked Token not FOUND"})
+            res.status(404).json({message:"Authorization Revoked Token not FOUND"})
         }
 
         const decoded = jwt.verify(token,process.env.SECRET_KEY)
