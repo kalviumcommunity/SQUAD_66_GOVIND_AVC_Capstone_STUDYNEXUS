@@ -1,4 +1,8 @@
 # SQUAD_66_GOVIND_AVC_Capstone_STUDYNEXUS
+
+BACKEND DEPLOYEMENT LINK - https://squad-66-govind-avc-capstone-studynexus.onrender.com
+
+
 Introduction : 
 
     - 	StudyNexus is a contemporary peer learning platform created to bring 
