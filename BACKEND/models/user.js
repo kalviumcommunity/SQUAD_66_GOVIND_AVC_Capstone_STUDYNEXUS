@@ -2,6 +2,8 @@ const mongoose=require('mongoose')
 const { hashpassword } = require('../utils/hashpassword')
 //added schema for user creation and studygroup creation -- 
 
+// added database schema for user creation
+
 const userschema=new mongoose.Schema({
     name:{
         type:String,
