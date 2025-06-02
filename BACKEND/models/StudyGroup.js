@@ -1,5 +1,8 @@
 const mongoose=require('mongoose')
 
+
+// added database schema for studyGroup creation
+
 const studyGroupSchema=new mongoose.Schema({
     userId:{
         type:mongoose.Schema.Types.ObjectId,
