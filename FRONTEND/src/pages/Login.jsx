@@ -62,7 +62,7 @@ const Login = () => {
       console.log(res)
 
       if(res.success){
-        // localStorage.setItem("token",res.token)
+        localStorage.setItem("token",res.token)
         setEmail("")
         setPassword("")
         setErrors({})
