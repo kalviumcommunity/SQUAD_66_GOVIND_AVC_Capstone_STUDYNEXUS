@@ -4,7 +4,7 @@ import {FaGoogle, FaSlash} from "react-icons/fa";
 import {Eye,EyeOff} from "lucide-react";
 import toast from "react-hot-toast"
 import axios from 'axios';
-import { Navigate,useNavigate } from 'react-router-dom';
+import { Link,Navigate,useNavigate } from 'react-router-dom';
 
 
 
@@ -62,7 +62,7 @@ const Login = () => {
       console.log(res)
 
       if(res.success){
-        localStorage.setItem("token",res.token)
+        // localStorage.setItem("token",res.token)
         setEmail("")
         setPassword("")
         setErrors({})
@@ -168,7 +168,7 @@ const Login = () => {
           </button>
   
           <p className="mt-4 text-center text-sm">
-            Don't have an account? <a href="#" className="text-blue-600 font-medium">Sign up</a>
+            Don't have an account? <Link to="/signup" className="text-blue-600 font-medium">Sign up</Link>
           </p>
         </div>
   
