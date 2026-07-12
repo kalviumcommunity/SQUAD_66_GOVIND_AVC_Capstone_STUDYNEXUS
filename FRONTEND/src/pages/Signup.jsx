@@ -53,7 +53,8 @@ const Signup = () => {
       return;
     }
     try{
-    const response=await fetch('http://localhost:4500/api/auth/signup',{
+    const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://squad-66-govind-avc-capstone-studynexus.onrender.com'
+    const response=await fetch(`${apiBaseUrl}/api/auth/signup`,{
         method:'POST',
         headers:{
             'Content-Type':'application/json',

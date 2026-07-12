@@ -50,7 +50,8 @@ const Login = () => {
     setLoading(true)
 
     try{
-      const response=await fetch("http://localhost:4500/api/auth/login",{
+      const apiBaseUrl = import.meta.env.VITE_API_URL || "https://squad-66-govind-avc-capstone-studynexus.onrender.com"
+      const response=await fetch(`${apiBaseUrl}/api/auth/login`,{
         method:"POST",
         headers:{
           "Content-Type":"application/json",
