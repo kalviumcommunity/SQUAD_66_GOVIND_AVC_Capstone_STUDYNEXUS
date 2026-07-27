@@ -82,21 +82,73 @@ const login=async(req,res)=>{
 
 }
 
+// PUT /api/auth/profile — update logged-in user details (email & userid cannot be changed)
+const updateProfile=async(req,res)=>{
+    try{
+        if(!req.user || !req.user._id){
+            return res.status(401).json({message:"Unauthorized"})
+        }
+
+        if(req.body.email !== undefined || req.body.userid !== undefined){
+            return res.status(400).json({
+                message:"Email and User ID cannot be updated"
+            })
+        }
+
+        const allowedFields=['name','dob','number','accomodation','hostelDetails','course','year','photo']
+        const updates={}
+        for(const field of allowedFields){
+            if(req.body[field] !== undefined){
+                updates[field]=req.body[field]
+            }
+        }
+
+        if(Object.keys(updates).length===0){
+            return res.status(400).json({message:"No valid fields provided to update"})
+        }
+
+        if(updates.accomodation && !['Hostel','Day Scholar'].includes(updates.accomodation)){
+            return res.status(400).json({message:"Accommodation must be Hostel or Day Scholar"})
+        }
+
+        if(updates.accomodation==='Day Scholar'){
+            updates.hostelDetails=''
+        }
+
+        const updatedUser=await User.findByIdAndUpdate(
+            req.user._id,
+            {$set:updates},
+            {new:true,runValidators:true}
+        ).select('-password')
+
+        if(!updatedUser){
+            return res.status(404).json({message:"User not found"})
+        }
+
+        res.status(200).json({
+            success:true,
+            message:"Profile updated successfully",
+            user:{
+                name:updatedUser.name,
+                userid:updatedUser.userid,
+                email:updatedUser.email,
+                photo:updatedUser.photo || "",
+                course:updatedUser.course,
+                year:updatedUser.year,
+                accomodation:updatedUser.accomodation,
+                hostelDetails:updatedUser.hostelDetails,
+                dob:updatedUser.dob,
+                number:updatedUser.number
+            }
+        })
+    }catch(err){
+        console.error('Update profile error:', err)
+        res.status(500).json({message:"error updating profile", error: err.message || err})
+    }
+}
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-module.exports={signup,login}
+module.exports={signup,login,updateProfile}
