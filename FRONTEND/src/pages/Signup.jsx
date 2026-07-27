@@ -31,7 +31,10 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
     agreeToTerms: false,
+    photo: '',
   });
+  const [photoPreview, setPhotoPreview] = useState('');
+  const [photoFile, setPhotoFile] = useState(null);
 
   const navigate=useNavigate()
 
@@ -46,6 +49,24 @@ const Signup = () => {
     }));
   };
 
+  const handlePhotoChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file');
+      return;
+    }
+
+    setPhotoFile(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPhotoPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
@@ -54,23 +75,24 @@ const Signup = () => {
     }
     try{
     const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://squad-66-govind-avc-capstone-studynexus.onrender.com'
+    const submitData = new FormData();
+    submitData.append('name', formData.name);
+    submitData.append('userid', formData.userId);
+    submitData.append('dob', formData.dob);
+    submitData.append('number', formData.phone);
+    submitData.append('email', formData.email);
+    submitData.append('accomodation', formData.isHosteler ? 'Hostel' : 'Day Scholar');
+    submitData.append('hostelDetails', formData.isHosteler ? formData.hostel : '');
+    submitData.append('course', formData.course);
+    submitData.append('year', formData.year);
+    submitData.append('password', formData.password);
+    if (photoFile) {
+      submitData.append('photo', photoFile);
+    }
+
     const response=await fetch(`${apiBaseUrl}/api/auth/signup`,{
         method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-        },
-        body:JSON.stringify({
-        name: formData.name,
-        userid: formData.userId,
-        dob: formData.dob,
-        number: formData.phone,
-        email: formData.email,
-        accomodation: formData.isHosteler ? 'Hostel' : 'Day Scholar',
-        hostelDetails: formData.isHosteler ? formData.hostel : '',
-        course: formData.course,
-        year: formData.year,
-        password: formData.password,
-        })
+        body:submitData
     })
     const result=await response.json();
 
@@ -147,6 +169,23 @@ const Signup = () => {
                 value={formData.email}
                 onChange={handleChange}
               />
+
+              <div className="col-span-full space-y-2">
+                <label className="text-sm font-medium text-gray-700">Profile Photo</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2"
+                />
+                {photoPreview && (
+                  <img
+                    src={photoPreview}
+                    alt="Profile preview"
+                    className="h-24 w-24 rounded-full border border-gray-300 object-cover"
+                  />
+                )}
+              </div>
 
               {/* Accommodation */}
               <div className="space-y-2">

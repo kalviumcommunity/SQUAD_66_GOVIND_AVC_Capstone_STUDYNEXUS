@@ -35,9 +35,7 @@ const userschema=new mongoose.Schema({
     },
     hostelDetails:{
         type:String,
-        required:function (){
-            return this.accomodationType==="Hostel"
-        }
+        default:""
     },
     course:{
         type:String,
@@ -46,6 +44,10 @@ const userschema=new mongoose.Schema({
     year:{
         type:String,
         required:true
+    },
+    photo:{
+        type:String,
+        default:""
     },
     password:{
         type:String,
