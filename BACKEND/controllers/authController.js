@@ -41,11 +41,21 @@ const signup=async(req,res)=>{
 const login=async(req,res)=>{
     try{
         const {email,userid,password}=req.body
-        const existinguser=await User.findOne({$or:[{email},{userid}]})
+        const filters=[]
+        if(email) filters.push({email: String(email).toLowerCase().trim()})
+        if(userid) filters.push({userid: String(userid).trim()})
+        if(filters.length===0){
+            return res.status(400).json({message:"Email or User ID is required"})
+        }
+        if(!password){
+            return res.status(400).json({message:"Password is required"})
+        }
+
+        const existinguser=await User.findOne({$or:filters})
         if(!existinguser){
             return res.status(404).json({message:"User is not found please signup"})
         }
-        console.log(existinguser)
+
         const storedPassword=existinguser.password
         const iscorrectpassword=await comparePassword(password,storedPassword)
         if (!iscorrectpassword){
